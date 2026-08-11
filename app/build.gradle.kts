@@ -63,13 +63,8 @@ android {
 }
 
 dependencies {
-    // REST API debugger, consumed as a published Maven artifact via JitPack
-    // rather than a project(":rest-api-debugger") reference. JitPack only
-    // exposes the module-scoped com.github.<user>.<repo>:<module> coordinate
-    // when a repo publishes *multiple* artifacts; with a single publishable
-    // module it collapses to the plain repo coordinate instead — see
-    // rest-api-debugger/README.md.
-    implementation("com.github.mohamedchouat:Articles:v1.0.0")
+    // REST API debugger, now its own project: github.com/mohamedchouat/rest-api-debugger
+    implementation("com.github.mohamedchouat:rest-api-debugger:v1.0.0")
 
     // Core / Lifecycle
     implementation(libs.androidx.core.ktx)

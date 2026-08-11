@@ -14,9 +14,9 @@
 **Articles App** is a Kotlin/Jetpack Compose Android client for the public
 [DEV.to REST API](https://developers.forem.com/api/v1). It's built offline-first
 around a **single source of truth** (Room), follows **Clean Architecture +
-MVVM**, and ships with a self-contained **REST API debugger module** that
-surfaces every network call through a live notification and an in-app
-history/detail UI.
+MVVM**, and integrates [**rest-api-debugger**](https://github.com/mohamedchouat/rest-api-debugger),
+a standalone library that surfaces every network call through a live
+notification and an in-app history/detail UI.
 
 ---
 
@@ -34,8 +34,8 @@ history/detail UI.
   Compose disposing/rebuilding the screen's composition)
 - 🎨 **Custom Editorial Design** – Material 3 theme with a bundled variable
   font (Plus Jakarta Sans) and a dedicated color/shape system
-- 🐞 **REST API Debugger** – opt-in library module (`rest-api-debugger`) that
-  intercepts every OkHttp call and shows it via a live, color-coded
+- 🐞 **REST API Debugger** – integrates [rest-api-debugger](https://github.com/mohamedchouat/rest-api-debugger),
+  which intercepts every OkHttp call and shows it via a live, color-coded
   notification plus a Compose history/detail UI
 - 🔒 **Secret Masking** – Authorization headers, tokens, passwords, cookies,
   etc. are automatically redacted before the debugger ever stores or displays them
@@ -54,18 +54,19 @@ history/detail UI.
 - **Persistence:** Room (offline cache for both screens)
 - **Images:** Coil
 - **Navigation:** Navigation Compose
-- **Debugging:** custom `rest-api-debugger` module — OkHttp interceptor,
-  `NotificationCompat`, and its own Compose UI
+- **Debugging:** [rest-api-debugger](https://github.com/mohamedchouat/rest-api-debugger)
+  (own repo, consumed via JitPack) — OkHttp interceptor, `NotificationCompat`,
+  and its own Compose UI
 - **Tests:** JUnit, MockK, Turbine, `kotlinx-coroutines-test`
 
 ---
 
 ## 📂 Project Structure
 
-Two Gradle modules: `app` (the Articles client) and `rest-api-debugger` (a
-standalone, reusable library). `app` consumes it as a published Maven
-artifact via JitPack rather than a `project(":rest-api-debugger")`
-reference — see the REST API Debugger section below.
+A single Gradle module (`app`). The REST API debugger used to live here as
+a second module; it's now [its own repo](https://github.com/mohamedchouat/rest-api-debugger),
+consumed as a published Maven artifact via JitPack — see the REST API
+Debugger section below.
 
 ```plaintext
 Articles
@@ -114,24 +115,6 @@ Articles
 │           ├── DatabaseModule.kt
 │           ├── RepositoryModule.kt
 │           └── DispatcherModule.kt
-│
-└── rest-api-debugger                     # standalone Gradle library module
-    └── src/main/java/com/chtmed/restapidebugger
-        │   RestApiDebugger.kt            # public initialize()/interceptor() API
-        ├── interceptor/ApiCallInterceptor.kt
-        ├── model/ApiCallRecord.kt
-        ├── store/ApiCallHistoryStore.kt  # in-memory, bounded call history
-        ├── notification/
-        │   ├── NotificationHelper.kt
-        │   └── ApiDebuggerNotifier.kt
-        ├── util/
-        │   ├── SensitiveDataMasker.kt
-        │   ├── JsonFormatter.kt
-        │   └── DebuggerColors.kt
-        └── ui/
-            ├── RestApiDebuggerActivity.kt
-            ├── HistoryScreen.kt
-            └── DetailScreen.kt
 ```
 
 ---
@@ -139,9 +122,20 @@ Articles
 ## 🐞 REST API Debugger
 
 Every request/response made through the app's `OkHttpClient` is captured by
-`rest-api-debugger` — method, URL, headers, request/response bodies, status,
-and timing — with secrets masked before anything is stored. It's controlled
-by a Gradle flag:
+[rest-api-debugger](https://github.com/mohamedchouat/rest-api-debugger) —
+method, URL, headers, request/response bodies, status, and timing — with
+secrets masked before anything is stored. It's a separate repo/library,
+pulled in here via JitPack:
+
+```kotlin
+// settings.gradle.kts
+maven("https://jitpack.io")
+
+// app/build.gradle.kts
+implementation("com.github.mohamedchouat:rest-api-debugger:v1.0.0")
+```
+
+and controlled by a Gradle flag in this app:
 
 ```properties
 # gradle.properties
@@ -152,15 +146,9 @@ which is wired into `BuildConfig.DEBUG_REST_API` (always `false` in release
 builds regardless of the flag). Tap the notification to open the full
 history, then tap a call for its full request/response detail.
 
-The module is also usable from other projects via
-[JitPack](https://jitpack.io/#mohamedchouat/Articles):
-
-```kotlin
-implementation("com.github.mohamedchouat:Articles:<tag>")
-```
-
-See [`rest-api-debugger/README.md`](rest-api-debugger/README.md) for the
-module's full documentation, including the JitPack setup and integration steps.
+See the library's own [README](https://github.com/mohamedchouat/rest-api-debugger)
+for its full documentation, security/masking details, and a sample app with
+GET/POST/PUT/DELETE demo buttons.
 
 ---
 

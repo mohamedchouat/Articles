@@ -10,10 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://jitpack.io") // rest-api-debugger, consumed as a published artifact — see app/build.gradle.kts
+        maven("https://jitpack.io") // github.com/mohamedchouat/rest-api-debugger — see app/build.gradle.kts
     }
 }
 
 rootProject.name = "Articles"
 include(":app")
-include(":rest-api-debugger")
