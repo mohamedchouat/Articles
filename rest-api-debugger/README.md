@@ -25,10 +25,47 @@ and an in-app history/detail UI, for debug builds only.
 
 ### 1. Add the module
 
-Already wired into this project (`settings.gradle.kts` includes
-`:rest-api-debugger`, and `app/build.gradle.kts` depends on it). For a new
-project, copy the module folder, add it to `settings.gradle.kts`, and add
-`implementation(project(":rest-api-debugger"))` to the consuming app module.
+**Within this repo** it's already wired up (`settings.gradle.kts` includes
+`:rest-api-debugger`, and `app/build.gradle.kts` depends on it via
+`implementation(project(":rest-api-debugger"))`) — nothing else to do.
+
+**From a different project**, add it as a Maven dependency via
+[JitPack](https://jitpack.io/#mohamedchouat/Articles), which builds
+published tags of this repo on demand:
+
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+}
+```
+
+```kotlin
+// app/build.gradle.kts
+dependencies {
+    implementation("com.github.mohamedchouat.Articles:rest-api-debugger:<tag>")
+
+    // The module declares OkHttp as compileOnly, precisely so it doesn't
+    // force a specific OkHttp version on consumers — bring your own:
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+}
+```
+
+Replace `<tag>` with a published release tag (e.g. `v1.0.0`), a commit hash,
+or `main-SNAPSHOT` for the latest commit on `main`. The very first build of a
+given tag can take JitPack a minute or two; check
+[jitpack.io/#mohamedchouat/Articles](https://jitpack.io/#mohamedchouat/Articles)
+for build status if resolution fails.
+
+Note the group id joins the GitHub username and repo with a dot
+(`com.github.mohamedchouat.Articles`), not a colon — that's JitPack's
+convention for resolving a specific module out of a multi-module repo like
+this one (`app` + `rest-api-debugger`), as opposed to `com.github.User:Repo`
+for single-artifact repos.
 
 ### 2. Gradle toggle
 

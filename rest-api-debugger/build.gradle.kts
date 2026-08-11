@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    `maven-publish`
 }
 
 android {
@@ -34,6 +35,33 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    // Exposes the "release" AAR variant as a publishable component, plus a
+    // sources jar, so this module can be consumed as a Maven artifact (e.g.
+    // via JitPack from other projects) instead of only as a project(":...") dep.
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+// JitPack resolves com.github.<user>.<repo>:<module>:<tag> to whatever this
+// module publishes to the local Maven repo, regardless of the exact
+// groupId/version set here — but they're set explicitly anyway so
+// `publishToMavenLocal` also works standalone for local testing.
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.mohamedchouat.Articles"
+            artifactId = "rest-api-debugger"
+            version = System.getenv("VERSION_NAME") ?: "1.0.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
     }
 }
 

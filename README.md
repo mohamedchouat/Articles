@@ -148,9 +148,17 @@ debugRestApi=true
 
 which is wired into `BuildConfig.DEBUG_REST_API` (always `false` in release
 builds regardless of the flag). Tap the notification to open the full
-history, then tap a call for its full request/response detail. See
-[`rest-api-debugger/README.md`](rest-api-debugger/README.md) for the module's
-own documentation and integration notes.
+history, then tap a call for its full request/response detail.
+
+The module is also usable from other projects via
+[JitPack](https://jitpack.io/#mohamedchouat/Articles):
+
+```kotlin
+implementation("com.github.mohamedchouat.Articles:rest-api-debugger:<tag>")
+```
+
+See [`rest-api-debugger/README.md`](rest-api-debugger/README.md) for the
+module's full documentation, including the JitPack setup and integration steps.
 
 ---
 
