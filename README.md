@@ -63,7 +63,9 @@ history/detail UI.
 ## 📂 Project Structure
 
 Two Gradle modules: `app` (the Articles client) and `rest-api-debugger` (a
-standalone, reusable library the app depends on).
+standalone, reusable library). `app` consumes it as a published Maven
+artifact via JitPack rather than a `project(":rest-api-debugger")`
+reference — see the REST API Debugger section below.
 
 ```plaintext
 Articles
@@ -154,7 +156,7 @@ The module is also usable from other projects via
 [JitPack](https://jitpack.io/#mohamedchouat/Articles):
 
 ```kotlin
-implementation("com.github.mohamedchouat.Articles:rest-api-debugger:<tag>")
+implementation("com.github.mohamedchouat:Articles:<tag>")
 ```
 
 See [`rest-api-debugger/README.md`](rest-api-debugger/README.md) for the

@@ -25,13 +25,10 @@ and an in-app history/detail UI, for debug builds only.
 
 ### 1. Add the module
 
-**Within this repo** it's already wired up (`settings.gradle.kts` includes
-`:rest-api-debugger`, and `app/build.gradle.kts` depends on it via
-`implementation(project(":rest-api-debugger"))`) — nothing else to do.
-
-**From a different project**, add it as a Maven dependency via
-[JitPack](https://jitpack.io/#mohamedchouat/Articles), which builds
-published tags of this repo on demand:
+This repo itself now consumes it exactly the way an external project would —
+as a published Maven artifact via [JitPack](https://jitpack.io/#mohamedchouat/Articles),
+not a `project(":rest-api-debugger")` reference — so `app/build.gradle.kts`
+and `settings.gradle.kts` here double as a working, verified example.
 
 ```kotlin
 // settings.gradle.kts
@@ -47,7 +44,7 @@ dependencyResolutionManagement {
 ```kotlin
 // app/build.gradle.kts
 dependencies {
-    implementation("com.github.mohamedchouat.Articles:rest-api-debugger:<tag>")
+    implementation("com.github.mohamedchouat:Articles:<tag>")
 
     // The module declares OkHttp as compileOnly, precisely so it doesn't
     // force a specific OkHttp version on consumers — bring your own:
@@ -56,10 +53,22 @@ dependencies {
 ```
 
 Replace `<tag>` with a published release tag (e.g. `v1.0.0`), a commit hash,
-or `main-SNAPSHOT` for the latest commit on `main`. The very first build of a
-given tag can take JitPack a minute or two; check
+or `main-SNAPSHOT` for the latest commit on `main`.
+
+**On the coordinate:** `rest-api-debugger/build.gradle.kts` declares an
+explicit `groupId`/`artifactId` (`com.github.mohamedchouat.Articles:rest-api-debugger`)
+for its Maven publication, which is the right pattern *if* this repo ever
+publishes more than one library module — JitPack then exposes each one at
+`com.github.<user>.<repo>:<module>`. Today `rest-api-debugger` is the only
+publishable module in the repo, so JitPack collapses it to the plain
+repo-level coordinate instead: `com.github.mohamedchouat:Articles:<tag>`.
+If that stops resolving after a second library module is added here, switch
+back to the module-scoped coordinate.
+
+The very first build of a given tag can take JitPack a minute or two — a
+fresh `implementation(...)` resolve may 404 until that finishes. Check
 [jitpack.io/#mohamedchouat/Articles](https://jitpack.io/#mohamedchouat/Articles)
-for build status if resolution fails.
+for build status, or trigger it by opening that page, if resolution fails.
 
 Note the group id joins the GitHub username and repo with a dot
 (`com.github.mohamedchouat.Articles`), not a colon — that's JitPack's
