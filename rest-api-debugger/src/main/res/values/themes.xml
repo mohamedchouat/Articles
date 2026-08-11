@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Minimal platform theme for the debugger's Activity; the actual look
+         comes entirely from Compose (RestApiDebuggerTheme), so this only
+         needs to satisfy the window's base requirements. -->
+    <style name="Theme.RestApiDebugger" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
