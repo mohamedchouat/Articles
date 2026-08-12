@@ -2,9 +2,9 @@
 
 ## 📸 Screenshots
 
-| Articles List | Article Detail | REST API Debugger Notification | REST API Debugger History |
-|---|---|---|---|
-| ![Articles List](https://github.com/mohamedchouat/Articles/blob/main/screen/list.png) | ![Article Detail](https://github.com/mohamedchouat/Articles/blob/main/screen/details.png) | ![REST API Debugger Notification](https://github.com/mohamedchouat/Articles/blob/main/screen/notif.png) | ![REST API Debugger History](https://github.com/mohamedchouat/Articles/blob/main/screen/api%20page.png) |
+| Articles List | Article Detail | REST API Debugger Notification | REST API Debugger History | REST API Debugger Call Detail (Share) |
+|---|---|---|---|---|
+| ![Articles List](https://github.com/mohamedchouat/Articles/blob/main/screen/list.png) | ![Article Detail](https://github.com/mohamedchouat/Articles/blob/main/screen/details.png) | ![REST API Debugger Notification](https://github.com/mohamedchouat/Articles/blob/main/screen/notif.png) | ![REST API Debugger History](https://github.com/mohamedchouat/Articles/blob/main/screen/api%20page.png) | ![REST API Debugger Call Detail](https://github.com/mohamedchouat/Articles/blob/main/screen/api-detail.png) |
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-100%25-orange?style=flat-square)](https://kotlinlang.org/)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-blue?style=flat-square)](https://developer.android.com/jetpack/compose)
