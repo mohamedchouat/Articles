@@ -132,19 +132,22 @@ pulled in here via JitPack:
 maven("https://jitpack.io")
 
 // app/build.gradle.kts
-implementation("com.github.mohamedchouat:rest-api-debugger:v1.0.0")
+implementation("com.github.mohamedchouat:rest-api-debugger:v1.1.0")
 ```
 
-and controlled by a Gradle flag in this app:
+and controlled by two Gradle flags in this app:
 
 ```properties
 # gradle.properties
-debugRestApi=true
+debugRestApi=true       # enable/disable the whole debugger
+alertOnApiFailure=true  # play a sound on the notification when a call fails
 ```
 
-which is wired into `BuildConfig.DEBUG_REST_API` (always `false` in release
-builds regardless of the flag). Tap the notification to open the full
-history, then tap a call for its full request/response detail.
+wired into `BuildConfig.DEBUG_REST_API` / `BuildConfig.ALERT_ON_API_FAILURE`
+(both always `false` in release builds regardless of these flags). Tap the
+notification to open the full history, tap a call for its full
+request/response detail, and share any call's details from there via the
+detail screen's share action.
 
 See the library's own [README](https://github.com/mohamedchouat/rest-api-debugger)
 for its full documentation, security/masking details, and a sample app with

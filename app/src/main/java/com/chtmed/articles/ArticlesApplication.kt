@@ -8,6 +8,10 @@ import dagger.hilt.android.HiltAndroidApp
 class ArticlesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        RestApiDebugger.initialize(this, BuildConfig.DEBUG_REST_API)
+        RestApiDebugger.initialize(
+            context = this,
+            enabled = BuildConfig.DEBUG_REST_API,
+            alertOnFailure = BuildConfig.ALERT_ON_API_FAILURE
+        )
     }
 }

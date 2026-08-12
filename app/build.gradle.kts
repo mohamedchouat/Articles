@@ -7,10 +7,11 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
-// REST API debugger toggle for debug builds (see rest-api-debugger module).
-// Override with -PdebugRestApi=false. Release always hard-disables it below,
-// regardless of this flag.
+// REST API debugger toggles (see github.com/mohamedchouat/rest-api-debugger).
+// Override with -PdebugRestApi=false / -PalertOnApiFailure=false. Release
+// always hard-disables the debugger below, regardless of these flags.
 val debugRestApiEnabled = (project.findProperty("debugRestApi") as? String)?.toBoolean() ?: true
+val alertOnApiFailureEnabled = (project.findProperty("alertOnApiFailure") as? String)?.toBoolean() ?: true
 
 android {
     namespace = "com.chtmed.articles"
@@ -34,10 +35,12 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("boolean", "DEBUG_REST_API", "false")
+            buildConfigField("boolean", "ALERT_ON_API_FAILURE", "false")
         }
         debug {
             isMinifyEnabled = false
             buildConfigField("boolean", "DEBUG_REST_API", debugRestApiEnabled.toString())
+            buildConfigField("boolean", "ALERT_ON_API_FAILURE", alertOnApiFailureEnabled.toString())
         }
     }
 
@@ -64,7 +67,7 @@ android {
 
 dependencies {
     // REST API debugger, now its own project: github.com/mohamedchouat/rest-api-debugger
-    implementation("com.github.mohamedchouat:rest-api-debugger:v1.0.0")
+    implementation("com.github.mohamedchouat:rest-api-debugger:v1.1.0")
 
     // Core / Lifecycle
     implementation(libs.androidx.core.ktx)
